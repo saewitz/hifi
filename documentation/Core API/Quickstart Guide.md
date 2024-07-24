@@ -1,3 +1,5 @@
+**This guide will walk you through converting $2 USD fiat into USDC stablecoin, transferring the USDC to another user, and then converting the USDC back into fiat to be sent to a fiat bank account.**
+
 This guide assumes you have generated an API Key here: <https://dashboard.hifibridge.com/apikeys>
 
 
@@ -19,8 +21,7 @@ As the developer, you can choose to pass a redirect URL, which will redirect the
 Request:
 
 
-cURL
-```
+```curl
 curl --request POST \
      --url https://production.hifibridge.com/tos-link \
      --header 'accept: application/json' \
@@ -32,14 +33,11 @@ curl --request POST \
   "redirectUrl": "yeahbuddy.com/path-to-redirect-page-where-you-will-parse-the-signedAgreementId"
 }
 '
-
 ```
 
 Response:
 
-
-cURL
-```
+```json
 {
   "url": "https://dashboard.hifibridge.com/accept-terms-of-service?sessionToken=3e5f792f-6707-4e6b-807a-7a27b5266860&redirectUrl=yeahbuddy.com%2Fpath-to-redirect-page-where-you-will-parse-the-signedAgreementId&templateId=2fb2da24-472a-4e5b-b160-038d9dc82a40",
 }
@@ -49,16 +47,11 @@ cURL
 The signedAgreementId will be provided in the redirect URL as a URL parameter, which should be parsed and included in the subsequent POST /user/create call..
 
 
-![HIFI's default terms of service template. This page can be whitelabled with your organizations logo and brand colors.](https://files.readme.io/47eda49-image.png)
+<img alt="HIFI's default terms of service template. This page can be whitelabled with your organizations logo and brand colors." src="https://files.readme.io/47eda49-image.png" style="width: 50%;" />
 
-HIFI's default terms of service template. This page can be whitelabeled with your organization's logo and brand colors.
+*HIFI's default terms of service template. This page can be whitelabeled with your organization's logo and brand colors.*
 
-
-
-
-
-> 📘Note: The signedAgreementId is the same as the passed idempotencyKey you provide, so strictly speaking, you do not have to parse the redirect URL. You may simply attempt to call the POST /user/create endpoint with the idempotencyKey value as the signedAgreementId, but if the user did not accept the TOS, the user creation endpoint will return an error.
-> ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+<div class="announcement announcement-info">The signedAgreementId is the same as the passed idempotencyKey you provide, so strictly speaking, you do not have to parse the redirect URL. You may simply attempt to call the POST /user/create endpoint with the idempotencyKey value as the signedAgreementId, but if the user did not accept the TOS, the user creation endpoint will return an error.</div>
 
 
 ### Create the user object
@@ -73,8 +66,7 @@ Now that we have the user's signedAgreementId, we need to create the user by cal
 Request
 
 
-cURL
-```
+```curl
 curl --request POST \
      --url https://production.hifibridge.com/user/create \
      --header 'accept: application/json' \
@@ -106,9 +98,7 @@ curl --request POST \
 
 Response
 
-
-JSON
-```
+```json
 {
     "wallet": {
         "walletStatus": "ACTIVE",
@@ -208,9 +198,7 @@ Let's take a moment to understand the response:
 
 After polling the GET /user endpoint for a few seconds, we see that the user has successfully passed KYC for the `usdAch` `offRamp`, which is all we want for the purposes of this quickstart tutorial. If this user needs to offramp to `euroSepa`, we would submit one additional field (`proofOfAddress`) to the PUT /user endpoint.
 
-
-JSON
-```
+```json
 {
   "wallet": {
     "walletStatus": "ACTIVE",
@@ -294,11 +282,11 @@ JSON
 ```
 
 ### Funding the user with $2 USDC
+### Funding the user with $2 USDC
 
 
 
-> 📘HIFI is actively introducing additional onramps for users in non\-US geographies.
-> ----------------------------------------------------------------------------------
+<div class="announcement announcement-info">HIFI is actively introducing additional onramps for users in non\-US geographies.</div>
 
 
 To fund the user, you can connect a bank account with HIFI by going through the onramp account set up process. To set up the onramp account with HIFI, you will first need to [create a Plaid processor token](/docs/generate-plaid-processor-token) and then use the processor token to set up an onramp account through HIFI's [USD\-Onramp\_Plaid](/docs/add-accounts#11-add-an-usd-onramp-plaid-bank-account) endpoint. Look [here](/docs/add-accounts#1-on-ramp-account) for details guide on how to create an onramp account.
@@ -307,9 +295,9 @@ To fund the user, you can connect a bank account with HIFI by going through the 
 For the sake of this quickstart tutorial, you can test the wallet functionality by simply sending the POLYGON\_MAINNET wallet address $2 USDC on Polygon mainnet via MetaMask, Coinbase, or any other wallet you use.
 
 
-![Send $1 to the POLYGON_MAINNET address returned in the POST /user/create response](https://files.readme.io/2ea9221-image.png)
+<img src="https://files.readme.io/2ea9221-image.png" alt="Send $1 to the POLYGON_MAINNET address returned in the POST /user/create response" style="width: 50%;" />
 
-Send $2 to the POLYGON\_MAINNET address returned in the POST /user/create response
+*Send $1 to the POLYGON\_MAINNET address returned in the POST /user/create response*
 
 
 
@@ -330,8 +318,7 @@ You may also notice that HIFI automagically handles gas on Polygon for any users
 
 
 
-> 🚧All /transfer endpoints must be called with production api keys.
-> -----------------------------------------------------------------
+<div class="announcement announcement-warning">All /transfer endpoints must be called with production api keys.</div>
 
 
 Now that the user object has been created and their wallet has been funded, let's send $0\.50 USDC to another user using the POST /transfer/crypto\-to\-crypto endpoint.
@@ -340,8 +327,7 @@ Now that the user object has been created and their wallet has been funded, let'
 Request
 
 
-cURL
-```
+```curl
 curl --request POST \
      --url https://production.hifibridge.com/transfer/crypto-to-crypto \
      --header 'accept: application/json' \
@@ -362,9 +348,7 @@ curl --request POST \
 
 Response:
 
-
-JSON
-```
+```json
 {
   "transferType": "CRYPTO_TO_CRYPTO",
   "transferDetails": {
@@ -387,9 +371,7 @@ JSON
 ```
 
 
-> 📘In the above example, we sent funds to a specific wallet address by providing the walletAddress parameter, but you can also specify a userId instead of the recipientAddress to send funds to another user you have created.
-> -----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-
+<div class="announcement announcement-info">In the above example, we sent funds to a specific wallet address by providing the walletAddress parameter, but you can also specify a userId instead of the recipientAddress to send funds to another user you have created.</div>
 
 Transferring stablecoin on the blockchain is inherently asynchronous. Therefore, we strongly recommend polling the GET /transfer/crypto\-to\-crypto endpoint to confirm the success of the transfer.
 
@@ -397,8 +379,7 @@ Transferring stablecoin on the blockchain is inherently asynchronous. Therefore,
 Request:
 
 
-cURL
-```
+```curl
 curl --request GET \
      --url 'https://production.hifibridge.com/transfer/crypto-to-crypto?id=6180f2db-2674-434a-8465-1c533666d595' \
      --header 'accept: application/json' \
@@ -409,8 +390,7 @@ curl --request GET \
 Response:
 
 
-JSON
-```
+```json
 {
   "transferType": "CRYPTO_TO_CRYPTO",
   "transferDetails": {
@@ -438,8 +418,8 @@ We see that the `status` is now "CONFIRMED", which indicates the transfer was su
 
 
 
-> 📘HIFI supports liquidating via ACH, SEPA, or wire. We are actively adding additional payment networks.
-> ------------------------------------------------------------------------------------------------------
+<div class="announcement announcement-info">HIFI supports liquidating via ACH, SEPA, or wire. We are actively adding additional payment networks.</div>
+
 
 
 Now that the user's (Ronnie Coleman) POLYGON\_MAINNET wallet has been funded with USDC, we can liquidate that as USD to our bank account.
@@ -450,9 +430,7 @@ We first need to add a destination bank account for the stablecoin liquidation. 
 
 Request:
 
-
-cURL
-```
+```curl
 curl --request POST \
      --url 'https://production.hifibridge.com/account/usd/offramp?userId=ac1083dc-dbd9-40fe-a2aa-eb20e3ef643b' \
      --header 'accept: application/json' \
@@ -479,8 +457,7 @@ curl --request POST \
 Response:
 
 
-JSON
-```
+```json
 {
   "status": "ACTIVE",
   "invalidFields": [],
@@ -497,9 +474,7 @@ Now we will liquidate $1 USDC to the Chase bank account we just added via the PO
 
 Request:
 
-
-cURL
-```
+```curl
 curl --request POST \
      --url https://production.hifibridge.com/transfer/crypto-to-fiat \
      --header 'accept: application/json' \
@@ -524,8 +499,7 @@ curl --request POST \
 Response:
 
 
-JSON
-```
+```json
 {
   "transferType": "CRYPTO_TO_FIAT",
   "transferDetails": {
@@ -554,8 +528,7 @@ Once again, we want to poll the GET /transfer/crypto\-to\-fiat endpoint to make 
 Request:
 
 
-cURL
-```
+```curl
 curl --request GET \
      --url 'https://production.hifibridge.com/transfer/crypto-to-fiat?id=f77eb6e4-8a10-4925-9c8d-0cf7ac0b563f' \
      --header 'accept: application/json' \
@@ -566,8 +539,7 @@ curl --request GET \
 Response:
 
 
-JSON
-```
+```json
 {
   "transferType": "CRYPTO_TO_FIAT",
   "transferDetails": {
@@ -598,8 +570,3 @@ We see that the status is set to COMPLETED\_ONCHAIN, which indicates a successfu
 Congratulations! You've successfully navigated through several key processes of converting fiat to USDC, transferring it to another user, and converting it back to fiat. We hope this guide has provided you with a solid understanding of how to utilize HIFI's API endpoints to manage digital currency transfers seamlessly. If you have any further questions or need additional support, please refer to our documentation or contact our support team. Happy coding!
 
 Updated 5 days ago 
-
-
-
----
-

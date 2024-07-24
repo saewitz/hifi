@@ -7,14 +7,8 @@
 * **Idempotency Key:** Prevents duplicate requests by making sure that a request is not processed more than once.
 * **Transaction Types:** Various transaction types such as crypto\-to\-crypto, crypto\-to\-fiat, and fiat\-to\-crypto, each serving different use cases.
 * **ACH (Automated Clearing House):** A network used for electronic funds transfers and payments in the USA.  
-
-**SEPA (Single Euro Payments Area):** An initiative of the European Union that simplifies bank transfers denominated in Euro.
+* **SEPA (Single Euro Payments Area):** An initiative of the European Union that simplifies bank transfers denominated in Euro.
 * **Virtual Accounts:** Bank addresses designed for ACH and wire transactions where incoming fiat funds are automatically converted into stablecoin.  
+* **Liquidation Address:** A designated wallet address used to automatically convert incoming stablecoin funds into fiat currency. HIFI uses this functionality under the hood for ACH offramps and does not expose this functionality to developers.
 
-**Liquidation Address:** A designated wallet address used to automatically convert incoming stablecoin funds into fiat currency. HIFI uses this functionality under the hood for ACH offramps and does not expose this functionality to developers.
-Updated 6 days ago 
-
-
-
----
 

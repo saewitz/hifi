@@ -1,5 +1,7 @@
 {
-    "website": "Sensible",
+    "website": "HIFI",
+    "logo": "logo.svg",
+    "includeWebsite": false,
     "pages": [
         {
             "name": "Documentation",
