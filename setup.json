@@ -1,0 +1,13 @@
+{
+    "website": "Sensible",
+    "pages": [
+        {
+            "name": "Documentation",
+            "path": "/docs"
+        },
+        {
+            "name": "API Reference",
+            "path": "/pi"
+        }
+    ]
+}
