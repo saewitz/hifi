@@ -1,5 +1,6 @@
 This guide assumes you have generated an API Key here: <https://dashboard.hifibridge.com/apikeys>
 
+This is a demo with HIFI!
 
 Welcome to the HIFI Quickstart Guide! In this guide, we'll walk you through the process of converting a single dollar from fiat to USDC stablecoin, transferring the USDC to another user, and then converting the USDC back into fiat to be sent to a bank account. By following along, you'll gain a clear understanding of how our endpoints work and how to integrate them into your application. Make sure you have your API key from HIFI ready to get started.
 
