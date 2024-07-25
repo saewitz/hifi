@@ -1,7 +1,6 @@
 This is a demo of HIFI's features.
 
 In this demo, you will create a user and list users. This is a live demo using HIFI's sandbox.
-
 <style>
     .step {
         background-color: rgba(135, 206, 235, 0.5);
