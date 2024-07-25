@@ -1,6 +1,7 @@
 This is a demo of HIFI's features.
 
 In this demo, you will create a user and list users. This is a live demo using HIFI's sandbox.
+
 <style>
     .step {
         background-color: rgba(135, 206, 235, 0.5);
@@ -18,7 +19,7 @@ In this demo, you will create a user and list users. This is a live demo using H
 
         usersButton.onclick = async function() {
             const apiInput = document.getElementById("api-key").value;
-            const usersRequest = await fetch('https://cors-anywhere.herokuapp.com/https://sandbox.hifibridge.com/user/all', {
+            const usersRequest = await fetch('https://try.readme.io/https://sandbox.hifibridge.com/user/all', {
                 headers: {
                     "authorization": `Bearer ${apiInput}`
                 }
@@ -37,7 +38,7 @@ In this demo, you will create a user and list users. This is a live demo using H
             event.preventDefault();
             const apiInput = document.getElementById("api-key").value;
             document.getElementById('message').innerText = "Loading";
-            const request = await fetch('https://cors-anywhere.herokuapp.com/https://sandbox.hifibridge.com/user/create', {
+            const request = await fetch('https://try.readme.io/https://sandbox.hifibridge.com/user/create', {
                 method: "POST",
                 headers: {
                     "accept": "application/json",
