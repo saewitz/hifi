@@ -66,50 +66,6 @@ curl -X POST https://sandbox.plaid.com/link/token/create \
 
 Once you have a **link\_token**, all it takes is a few lines of client\-side JavaScript to launch Link. Then, in the **onSuccess** callback, you can call a simple server\-side handler to exchange the Link **public\_token** for a Plaid **access\_token** and a HIFI **processor\_token**.
 
-
-JavaScript
-```
-<button id="linkButton">Open Link - Institution Select</button>
-<script src="https://cdn.plaid.com/link/v2/stable/link-initialize.js"></script>
-<script>
-  (async function(){
-    var linkHandler = Plaid.create({
-      // Make a request to your server to fetch a new link_token.
-      token: (await $.post('/create_link_token')).link_token,
-      onSuccess: function(public_token, metadata) {
-        // The onSuccess function is called when the user has successfully
-        // authenticated and selected an account to use.
-        //
-        // When called, you will send the public_token and the selected accounts,
-        // metadata.accounts, to your backend app server.
-        sendDataToBackendServer({
-           public_token: public_token,
-           accounts: metadata.accounts
-        });
-      },
-      onExit: function(err, metadata) {
-        // The user exited the Link flow.
-        if (err != null) {
-            // The user encountered a Plaid API error prior to exiting.
-        }
-        // metadata contains information about the institution
-        // that the user selected and the most recent API request IDs.
-        // Storing this information can be helpful for support.
-      },
-    });
-  })();
-
-  // Trigger the authentication view
-  document.getElementById('linkButton').onclick = function() {
-    // Link will automatically detect the institution ID
-    // associated with the public token and present the
-    // credential view to your user.
-    linkHandler.open();
-  };
-</script>
-
-```
-
 See the [Link parameter reference](https://plaid.com/docs/link/web/#create) for complete documentation on possible configurations.
 
 
